@@ -1,11 +1,11 @@
 import warnings
 from sklearn.exceptions import UndefinedMetricWarning
-from sklearn.datasets import fetch_olivetti_faces
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import accuracy_score, classification_report
 import os
 import json
+from data_processing import load_data  # Import the shared data loading function
 
 # Suppress undefined metric warnings
 warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
@@ -28,15 +28,15 @@ def train_test_evaluation(X, y, test_size=0.3, n_neighbors=5):
     return accuracy, report
 
 def save_results(accuracy, report, results_dir='results'):
+    """Save the model evaluation results to a JSON file."""
     os.makedirs(results_dir, exist_ok=True)
     with open(os.path.join(results_dir, 'model_results.json'), 'w') as f:
         json.dump({'accuracy': accuracy, 'classification_report': report}, f)
 
 def main():
-    # Load the dataset
-    data = fetch_olivetti_faces()
-    X, y = data.data, data.target
-    
+    # Load and preprocess the dataset
+    X, y = load_data()  # Now using load_data from data_processing.py
+
     # Run cross-validation
     cv_mean_accuracy = cross_val_evaluation(X, y, n_neighbors=5, cv_folds=5)
     print(f"Cross-validated Mean Accuracy: {cv_mean_accuracy:.2f}")
@@ -45,7 +45,10 @@ def main():
     split_accuracy, report = train_test_evaluation(X, y, test_size=0.3, n_neighbors=5)
     print(f"\nTrain-Test Split Accuracy: {split_accuracy:.2f}")
     print("\nClassification Report:\n", report)
+
+    # Save the results
     save_results(split_accuracy, report)
+    print("Results saved to 'results/model_results.json'")
 
 if __name__ == "__main__":
     main()

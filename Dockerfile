@@ -17,4 +17,7 @@ RUN python src/data_processing.py
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
+# Set permissions for results directory
+RUN mkdir -p /app/results && chmod -R 777 /app/results
+
 CMD ["./entrypoint.sh"]
