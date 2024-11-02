@@ -1,35 +1,49 @@
 from sklearn.datasets import fetch_olivetti_faces
 from sklearn.preprocessing import StandardScaler
+import joblib
+import os
 import numpy as np
 
-def load_data():
+def load_data(data_dir='data'):
     """
-    Loads the Olivetti Faces dataset and returns the data and labels.
-    """
-    data = fetch_olivetti_faces()
-    X = data.data  # Shape (400, 4096), each row is a flattened image
-    y = data.target  # Labels for each image (0-39 representing individuals)
-    return X, y
-
-def preprocess_data(X):
-    """
-    Preprocesses the data by scaling features.
+    Loads the Olivetti Faces dataset, saves it locally if not present,
+    and returns the data and labels.
     
     Parameters:
-    - X (ndarray): Feature matrix with shape (n_samples, n_features)
-    
+    - data_dir (str): Directory where the dataset is cached.
+
     Returns:
-    - X_scaled (ndarray): Scaled feature matrix
+    - X (ndarray): Feature matrix (scaled).
+    - y (ndarray): Labels for each image.
     """
+    # Ensure data directory exists
+    os.makedirs(data_dir, exist_ok=True)
+    
+    # Define path to save/load dataset
+    file_path = os.path.join(data_dir, 'olivetti_faces.pkl')
+    
+    # Load dataset if already downloaded, otherwise fetch and save
+    if os.path.exists(file_path):
+        print("Loading dataset from local file.")
+        data = joblib.load(file_path)
+    else:
+        print("Downloading dataset...")
+        data = fetch_olivetti_faces()
+        joblib.dump(data, file_path)
+    
+    # Retrieve features and labels
+    X, y = data.data, data.target
+    
+    # Scale features
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-    return X_scaled
+    
+    return X_scaled, y
 
 if __name__ == "__main__":
     # Load and preprocess the data
     X, y = load_data()
-    X_scaled = preprocess_data(X)
     
     # Save or print shapes for verification
-    print(f"Data shape: {X_scaled.shape}")
+    print(f"Data shape: {X.shape}")
     print(f"Labels shape: {y.shape}")

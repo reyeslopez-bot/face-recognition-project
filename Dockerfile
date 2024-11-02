@@ -1,15 +1,20 @@
 # Use the latest recommended Python slim image
 FROM python:3.13-slim
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy and install dependencies
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project directory into the container
+# Copy project files
 COPY . .
 
-# Specify the default command (optional)
-CMD ["python", "src/model_training.py"]
+# Run data processing as part of the build
+RUN python src/data_processing.py
+
+# Copy entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+CMD ["./entrypoint.sh"]
