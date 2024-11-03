@@ -1,7 +1,7 @@
 # Face Recognition Project
 
 ## Project Overview
-This project implements a face recognition model using the Olivetti Faces dataset. The goal is to classify different individuals using machine learning techniques. The project leverages Principal Component Analysis (PCA) for dimensionality reduction and k-Nearest Neighbors (k-NN) as the classifier.
+This project implements a face recognition model using the **Olivetti Faces dataset**. The goal is to classify different individuals using machine learning techniques. The project leverages **Principal Component Analysis (PCA)** for dimensionality reduction and **k-Nearest Neighbors (k-NN)** as the classifier.
 
 ## Dataset
 - **Name**: Olivetti Faces Dataset
@@ -13,6 +13,8 @@ This project implements a face recognition model using the Olivetti Faces datase
 ### 1. Running with Docker
 
 To streamline dependencies and ensure consistent environments, the project is Dockerized.
+
+#### Steps to Run in Docker:
 
 1. **Build the Docker Image**:
    ```bash
@@ -34,10 +36,10 @@ To streamline dependencies and ensure consistent environments, the project is Do
        -v face_recognition_results:/app/results \
        face-recognition-project
    ```
-   - **Results**: Output files will be available in the `face_recognition_results` volume, including `predictions.png` and `model_results.json`.
+   - **Results**: Output files, including `predictions.png` and `model_results.json`, will be saved in the `face_recognition_results` volume.
 
 4. **Access Jupyter Notebook** (optional):
-   To explore the Jupyter notebook in the project:
+   If you want to explore the Jupyter notebook in the project:
    ```bash
    docker run --rm -it \
        -v face_recognition_data:/app/data \
@@ -47,13 +49,15 @@ To streamline dependencies and ensure consistent environments, the project is Do
        jupyter notebook --ip 0.0.0.0 --no-browser --allow-root
    ```
    - **Notebook Access**: Open the URL shown in the terminal, which includes a token for accessing the notebook interface.
-   - **Find the Token**: If needed, you can find the token in the Docker container logs.
+   - **Find the Token**: If needed, you can locate the token in the Docker container logs.
 
 ### 2. Running Locally
 
 If you prefer running the project locally without Docker:
 
 **Requirements**: Python 3, pip
+
+#### Local Setup Steps:
 
 1. **Clone this repository**:
    ```bash
@@ -128,4 +132,11 @@ When you're finished with the project, deactivate the virtual environment by run
 ```bash
 deactivate
 ```
-```
+
+---
+
+### Explanation of Changes
+1. **Docker Instructions**: Added clear steps for setting up Docker, creating volumes, and running the project.
+2. **Local Setup**: Detailed local setup instructions with steps for virtual environment activation.
+3. **Project Structure**: Explained the structure and clarified each file’s purpose.
+4. **Result Descriptions**: Included a section on expected results with `predictions.png` visualization example.

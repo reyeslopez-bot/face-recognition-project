@@ -1,23 +1,21 @@
 # Use the latest recommended Python slim image
 FROM python:3.13-slim
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Install dependencies
+# Copy and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Copy the entire project directory into the container
 COPY . .
 
-# Run data processing as part of the build
+# Create directories for data and results
+RUN mkdir -p /app/data /app/results
+
+# Run data processing as part of the build to download data and cache it
 RUN python src/data_processing.py
 
-# Copy entrypoint script
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
-# Set permissions for results directory
-RUN mkdir -p /app/results && chmod -R 777 /app/results
-
+# Set default command to run all scripts via entrypoint
 CMD ["./entrypoint.sh"]

@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
-# Run model training
+# Run model training (including LOGO cross-validation)
 python src/model_training.py
 
-# Run visualization after training
+# Generate and save visualization results
 python src/visualize.py

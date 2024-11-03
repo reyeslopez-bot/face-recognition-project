@@ -16,14 +16,11 @@ def load_data(data_dir='data'):
     - X (ndarray): Feature matrix (scaled).
     - y (ndarray): Labels for each image.
     """
-    # Ensure data directory exists
     os.makedirs(data_dir, exist_ok=True)
+    file_path = os.path.join(data_dir, 'olivetti_faces.pkl')
     
     # Define path to save/load dataset
     file_path = os.path.join(data_dir, 'olivetti_faces.pkl')
-    scaler_path = os.path.join(data_dir, 'scaler.pkl')
-
-    # Load dataset if already downloaded, otherwise fetch and save
     if os.path.exists(file_path):
         print("Loading dataset from local file.")
         data = joblib.load(file_path)
@@ -31,17 +28,12 @@ def load_data(data_dir='data'):
         print("Downloading dataset...")
         data = fetch_olivetti_faces()
         joblib.dump(data, file_path)
-        print(f"Dataset saved to {file_path}")
     
-    # Retrieve features and labels
     X, y = data.data, data.target
-    
-    # Scale features and save the scaler
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
-    joblib.dump(scaler, scaler_path)  # Save the scaler for future use
-    print(f"Scaler saved to {scaler_path}")
-
+    
+    print("Data loaded and scaled.")
     return X_scaled, y
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 import os
 
-def show_predictions(X_test, y_test, y_pred, num_images=20, save_path=None):
+def show_predictions(X_test, y_test, y_pred, num_images=25, save_path=None):
     """
     Displays a specified number of test images along with the model's predictions and true labels.
     """
@@ -29,7 +29,7 @@ def show_predictions(X_test, y_test, y_pred, num_images=20, save_path=None):
     # Save plot if save_path is specified with higher DPI
     if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        plt.savefig(save_path, dpi=200)  # Save with higher resolution
+        plt.savefig(save_path, dpi=300)  # Save with higher resolution
         print(f"Overwriting and saving visualization to {save_path}")
 
     plt.show()
@@ -41,7 +41,7 @@ def main():
     knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(X_train, y_train)
     y_pred = knn.predict(X_test)
-    show_predictions(X_test, y_test, y_pred, num_images=20, save_path="results/predictions.png")
+    show_predictions(X_test, y_test, y_pred, num_images=25, save_path="results/predictions.png")  # Set to 25
 
 if __name__ == "__main__":
     main()
